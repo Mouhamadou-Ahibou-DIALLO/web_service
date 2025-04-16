@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "compte", schema = "fredouil")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Utilisateur extends PanacheEntityBase {
+public class UtilisateurEntity extends PanacheEntityBase {
     @Id
     private Long id;
     private String pseudo;
@@ -25,7 +25,7 @@ public class Utilisateur extends PanacheEntityBase {
     @Column(name = "statut_connexion")
     private int statutConnexion;
 
-    public Utilisateur() {}
+    public UtilisateurEntity() {}
 
     public Long getId() {
         return id;
@@ -69,7 +69,7 @@ public class Utilisateur extends PanacheEntityBase {
 
     @Override
     public String toString() {
-        return "Utilisateur{" +
+        return "UtilisateurEntity{" +
                 "id=" + id +
                 ", pseudo='" + pseudo + '\'' +
                 ", mail='" + mail + '\'' +

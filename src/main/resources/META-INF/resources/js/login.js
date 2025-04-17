@@ -16,10 +16,11 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
     if (response.ok) {
         const user = await response.json();
-        sessionStorage.setItem("utilisateur", JSON.stringify(user));
+        // sessionStorage.setItem("utilisateur", JSON.stringify(user));
+        // sessionStorage.setItem("sessionId", user.sessionId);
 
         window.location.href = "home.html";
     } else {
         document.getElementById("error").innerText = "Identifiants invalides.";
     }
-})
+});

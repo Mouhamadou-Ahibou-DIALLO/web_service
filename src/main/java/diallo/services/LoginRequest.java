@@ -4,6 +4,11 @@ public class LoginRequest {
     private String mail;
     private String motPasse;
 
+    public LoginRequest(String mail, String motPasse) {
+        this.mail = mail;
+        this.motPasse = motPasse;
+    }
+
     public String getMail() {
         return mail;
     }

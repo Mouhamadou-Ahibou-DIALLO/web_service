@@ -19,12 +19,15 @@ public class UtilisateurService {
     @Inject
     UtilisateurRepository utilisateurRepository;
 
-    @Transactional
-    public SessionEntity authentifier(LoginRequest loginRequest)
+    @Inject
+    SessionService sessionService;
+
+    public Long authentifier(LoginRequest loginRequest)
             throws UtilisateurNotFoundException, WrongPasswordException {
 
         UtilisateurEntity utilisateurEntity = utilisateurRepository.findByMail(loginRequest.getMail());
         if (utilisateurEntity == null) {
+            System.out.println("false");
             throw new UtilisateurNotFoundException(loginRequest.getMail());
         }
 
@@ -35,27 +38,13 @@ public class UtilisateurService {
 
         utilisateurEntity.setStatutConnexion(1);
         utilisateurRepository.persist(utilisateurEntity);
+        System.out.println("authentication success");
 
-        SessionEntity sessionEntity = new SessionEntity();
-        sessionEntity.setUserId(utilisateurEntity.getId());
-        sessionEntity.setMail(utilisateurEntity.getMail());
-        sessionEntity.setNom(utilisateurEntity.getNom());
-        sessionEntity.setPrenom(utilisateurEntity.getPrenom());
-        sessionEntity.setAvatar(utilisateurEntity.getAvatar());
-        sessionEntity.setPseudo(utilisateurEntity.getPseudo());
-        sessionEntity.setStatutConnexion(utilisateurEntity.getStatutConnexion());
-        sessionEntity.setCreatedAt(Instant.now());
-        sessionEntity.setExpiredAt(Instant.now().plusSeconds(86400));
-        sessionEntity.setSessionId(UUID.randomUUID().toString());
-
-        sessionEntity.persist();
-
-        return sessionEntity;
+        return utilisateurEntity.getId();
     }
 
     public void logout(String sessionId) throws UtilisateurNotFoundException {
-        SessionEntity sessionEntity = SessionEntity.find("sessionId", sessionId).firstResult();
-        if (sessionEntity == null) return;
+        SessionEntity sessionEntity = sessionService.getSession(sessionId);
 
         UtilisateurEntity utilisateurEntity = utilisateurRepository.findById(sessionEntity.getUserId());
         if (utilisateurEntity == null) {
@@ -64,10 +53,14 @@ public class UtilisateurService {
 
         utilisateurEntity.setStatutConnexion(0);
         utilisateurRepository.persist(utilisateurEntity);
+        System.out.println("logout success");
 
-        sessionEntity.delete();
+        sessionService.removeSession(sessionId);
     }
 
+    public SessionEntity getUserBySession(String sessionId) {
+        return sessionService.getSession(sessionId);
+    }
 
     public List<UtilisateurEntity> getAllUtilisateursConnected() {
         System.out.println("All utilisateurs connected");
@@ -89,5 +82,26 @@ public class UtilisateurService {
         utilisateurRepository.persist(utilisateurEntity);
         System.out.println("Avatar mis à jour");
         return utilisateurEntity.getAvatar();
+    }
+
+    public Long testLogin(String mail, String motPasse)
+            throws UtilisateurNotFoundException, WrongPasswordException {
+
+        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByMail(mail);
+        if (utilisateurEntity == null) {
+            System.out.println("false");
+            throw new UtilisateurNotFoundException(mail);
+        }
+
+        String motPasseHache = HashUtil.sha1(motPasse);
+        if (!utilisateurEntity.getMotPasse().equals(motPasseHache)) {
+            throw new WrongPasswordException();
+        }
+
+        utilisateurEntity.setStatutConnexion(1);
+        utilisateurRepository.persist(utilisateurEntity);
+        System.out.println("authentication success");
+
+        return utilisateurEntity.getId();
     }
 }

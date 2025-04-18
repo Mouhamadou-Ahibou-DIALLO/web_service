@@ -54,52 +54,6 @@ public class UtilisateurController {
         }
     }
 
-//    @POST
-//    @Path("/logout")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public Response logout(@HeaderParam("Authorization") String sessionId) {
-//        try {
-//            utilisateurService.logout(sessionId);
-//            return Response.ok("Déconnexion réussie").build();
-//        } catch (UtilisateurNotFoundException e) {
-//            return Response.status(Response.Status.BAD_REQUEST)
-//                    .entity("Utilisateur non trouvé pour cette session").build();
-//        }
-//    }
-
-//    @GET
-//    @Path("/mySession")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getSessionUser(@HeaderParam("Authorization") String sessionId) {
-//        SessionEntity sessionEntity = utilisateurService.getUserBySession(sessionId);
-//        if (sessionEntity != null) {
-//            return Response.ok(sessionEntity).build();
-//        } else {
-//            return Response.status(Response.Status.UNAUTHORIZED)
-//                    .entity("{\"error\":\"Session invalide ou expirée\"}")
-//                    .type(MediaType.APPLICATION_JSON)
-//                    .build();
-//        }
-//    }
-
-    @GET
-    @Path("/{mail}/{motPasse}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response testLogin(@PathParam(value = "mail") String mail, @PathParam(value = "motPasse") String motPasse) {
-        try {
-            Long idUser = utilisateurService.testLogin(mail, motPasse);
-            return Response.ok(idUser).build();
-        } catch (UtilisateurNotFoundException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Utilisateur non rencontré").build();
-        } catch (WrongPasswordException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Mot de passe incorrect").build();
-        }
-    }
-
-
     @PUT
     @Path("/avatar")
     @Consumes(MediaType.APPLICATION_JSON)

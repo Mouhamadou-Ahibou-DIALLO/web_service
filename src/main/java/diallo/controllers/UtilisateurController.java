@@ -112,3 +112,6 @@ public class UtilisateurController {
         }
     }
 }
+
+//  ahiboudiallo2018:hkoQPRPEd4n3hXpo@posts.eqvt28n.mongodb.net
+//quarkus.mongodb.database=posts

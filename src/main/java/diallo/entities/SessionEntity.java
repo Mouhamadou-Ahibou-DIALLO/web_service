@@ -1,8 +1,12 @@
 package diallo.entities;
 
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import io.quarkus.mongodb.panache.common.MongoEntity;
+
 import java.time.Instant;
 
-public class SessionEntity  {
+@MongoEntity(collection = "sessionUsers", database = "posts")
+public class SessionEntity extends PanacheMongoEntity {
 
     private String sessionId;
     private Long userId;

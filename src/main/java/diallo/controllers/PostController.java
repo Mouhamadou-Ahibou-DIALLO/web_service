@@ -18,7 +18,6 @@ public class PostController {
 
     @GET
     public List<PostEntity> getAllPosts() {
-        System.out.println("liste des posts");
         return postService.getAllPosts();
     }
 }

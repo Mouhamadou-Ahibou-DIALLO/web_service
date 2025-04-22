@@ -2,6 +2,7 @@ package diallo.services;
 
 import diallo.entities.PostEntity;
 import diallo.repositories.PostRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

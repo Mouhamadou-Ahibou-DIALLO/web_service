@@ -1,54 +1,64 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     const sessionId = sessionStorage.getItem("sessionId");
-//
-//     fetch("/utilisateur/mySession", {
-//         method: "GET",
-//         headers: {
-//             "Authorization": sessionId
-//         }
-//     })
-//         .then(response => {
-//             if (!response.ok) {
-//                 window.location.href = "../index.html";
-//             } else {
-//                 return response.json();
-//             }
-//         })
-//         .then(utilisateur => {
-//             if (utilisateur && utilisateur.pseudo) {
-//                 document.getElementById("nomUtilisateur").textContent = utilisateur.pseudo;
-//             }
-//         })
-//         .catch(err => {
-//             console.error("Erreur vérification session :", err);
-//             window.location.href = "../index.html";
-//         });
-// });
-
 function goProfil() {
     window.location.href = "profil.html";
 }
 
 function logout() {
-    // const sessionId = sessionStorage.getItem("sessionId");
-    //
-    // fetch("/utilisateur/logout", {
-    //     method: "POST",
-    //     headers: {
-    //         "Authorization": sessionId
-    //     }
-    // })
-    //     .then(response => {
-    //         if (response.ok) {
-    //             sessionStorage.clear();
-    //             window.location.href = "login.html";
-    //         } else {
-    //             alert("Échec de la déconnexion.");
-    //         }
-    //     })
-    //     .catch(err => {
-    //         console.error("Erreur lors de la déconnexion :", err);
-    //     });
-
     window.location.href = "index.html";
+}
+
+window.onload = function () {
+    fetch("http://localhost:4000/posts")
+        .then(response => response.json())
+        .then(posts => {
+            const container = document.getElementById("posts-container");
+
+            posts.forEach(post => {
+                const postElement = document.createElement("div");
+                postElement.classList.add("post");
+
+                // Hashtags
+                const hashtagsHTML = post.hashtags && post.hashtags.length > 0
+                    ? `<p><strong>Hashtags :</strong> ${post.hashtags.map(tag => `#${tag}`).join(' ')}</p>`
+                    : '';
+
+                // Image
+                const imageHTML = post.image
+                    ? `<img src="${post.image.url}" alt="${post.image.title}" class="post-image">`
+                    : '';
+
+                // Commentaires
+                const commentsHTML = post.comments && post.comments.length > 0
+                    ? `<div><strong>Commentaires :</strong><ul>` +
+                    post.comments.map(c =>
+                        `<li><em>${c.date} ${c.hour}</em> - Utilisateur ${c.commentedBy} : ${c.text}</li>`
+                    ).join('') + `</ul></div>`
+                    : '';
+
+                // Likes
+                const likedByHTML = post.likedBy && post.likedBy.length > 0
+                    ? `<p><strong>Likes (${post.likes}) :</strong> ${post.likedBy.map(id => `Utilisateur ${id}`).join(', ')}</p>`
+                    : `<p><strong>Likes :</strong> 0</p>`;
+
+                // Partages
+                const sharedByHTML = post.sharedBy && post.sharedBy.length > 0
+                    ? `<p><strong>Partagé par :</strong> ${post.sharedBy.map(id => `Utilisateur ${id}`).join(', ')}</p>`
+                    : '';
+
+                postElement.innerHTML = `
+                    <h3>${post.body || "(Pas de contenu)"}</h3>
+                    <p><strong>Créé par :</strong> Utilisateur ${post.createdBy}</p>
+                    <p><strong>Date :</strong> ${post.date} à ${post.hour}</p>
+                    ${hashtagsHTML}
+                    ${imageHTML}
+                    ${likedByHTML}
+                    ${sharedByHTML}
+                    ${commentsHTML}
+                `;
+
+                container.appendChild(postElement);
+            });
+        })
+        .catch(error => {
+            console.error("Erreur lors de la récupération des posts :", error);
+        });
 }

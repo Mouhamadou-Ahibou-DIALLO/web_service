@@ -5,4 +5,5 @@ import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class PostRepository implements PanacheMongoRepository<PostEntity> {}
+public class PostRepository implements PanacheMongoRepository<PostEntity> {
+}

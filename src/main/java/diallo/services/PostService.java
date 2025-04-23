@@ -15,6 +15,14 @@ public class PostService {
     PostRepository postRepository;
 
     public List<PostEntity> getAllPosts() {
-        return postRepository.listAll();
+        List<PostEntity> posts = postRepository.listAll();
+        System.out.println("Liste des posts: " + posts);
+        return posts;
+    }
+
+    public PostEntity addPost(PostEntity post) {
+        System.out.println("post added : " + post);
+        postRepository.persist(post);
+        return post;
     }
 }

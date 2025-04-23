@@ -53,16 +53,4 @@ public class UtilisateurController {
                     .entity("Mot de passe incorrect").build();
         }
     }
-
-    @PUT
-    @Path("/avatar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateAvatar(Long id, String avatar) {
-        try {
-            String updatedAvatar = utilisateurService.updateAvatar(id, avatar);
-            return Response.ok(updatedAvatar).build();
-        } catch (UtilisateurNotFoundException e) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-    }
 }

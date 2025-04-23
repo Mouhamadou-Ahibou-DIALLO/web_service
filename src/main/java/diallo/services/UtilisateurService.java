@@ -7,11 +7,8 @@ import diallo.repositories.UtilisateurRepository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @ApplicationScoped
 public class UtilisateurService {
@@ -70,38 +67,5 @@ public class UtilisateurService {
     public List<UtilisateurEntity> getAllUtilisateurs() {
         System.out.println("List des utilisateurs");
         return utilisateurRepository.listAll();
-    }
-
-    public String updateAvatar(Long id, String avatar) throws UtilisateurNotFoundException {
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.findById(id);
-        if (utilisateurEntity == null) {
-            throw new UtilisateurNotFoundException(id);
-        }
-
-        utilisateurEntity.setAvatar(avatar);
-        utilisateurRepository.persist(utilisateurEntity);
-        System.out.println("Avatar mis à jour");
-        return utilisateurEntity.getAvatar();
-    }
-
-    public Long testLogin(String mail, String motPasse)
-            throws UtilisateurNotFoundException, WrongPasswordException {
-
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByMail(mail);
-        if (utilisateurEntity == null) {
-            System.out.println("false");
-            throw new UtilisateurNotFoundException(mail);
-        }
-
-        String motPasseHache = HashUtil.sha1(motPasse);
-        if (!utilisateurEntity.getMotPasse().equals(motPasseHache)) {
-            throw new WrongPasswordException();
-        }
-
-        utilisateurEntity.setStatutConnexion(1);
-        utilisateurRepository.persist(utilisateurEntity);
-        System.out.println("authentication success");
-
-        return utilisateurEntity.getId();
     }
 }

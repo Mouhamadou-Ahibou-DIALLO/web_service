@@ -120,3 +120,37 @@ img#avatar {
     }
 }
 
+
+.post {
+    background-color: white;
+    margin-bottom: 20px;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post h3 {
+    margin-top: 0;
+    color: #34495e;
+}
+
+.post p {
+    margin: 0.3rem 0;
+}
+
+.post-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 5px;
+}

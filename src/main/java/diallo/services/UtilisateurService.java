@@ -19,7 +19,7 @@ public class UtilisateurService {
     @Inject
     SessionService sessionService;
 
-    public Long authentifier(LoginRequest loginRequest)
+    public SessionEntity authentifier(LoginRequest loginRequest)
             throws UtilisateurNotFoundException, WrongPasswordException {
 
         UtilisateurEntity utilisateurEntity = utilisateurRepository.findByMail(loginRequest.getMail());
@@ -37,26 +37,29 @@ public class UtilisateurService {
         utilisateurRepository.persist(utilisateurEntity);
         System.out.println("authentication success");
 
-        return utilisateurEntity.getId();
+        return sessionService.createSession(utilisateurEntity.getId(),
+                utilisateurEntity.getMail(), utilisateurEntity.getNom(),
+                utilisateurEntity.getPrenom(), utilisateurEntity.getPseudo());
     }
 
     public void logout(String sessionId) throws UtilisateurNotFoundException {
-        SessionEntity sessionEntity = sessionService.getSession(sessionId);
+        SessionEntity session = sessionService.getSession(sessionId);
+        if (session == null) throw new UtilisateurNotFoundException("Session invalide");
 
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.findById(sessionEntity.getUserId());
-        if (utilisateurEntity == null) {
-            throw new UtilisateurNotFoundException(sessionEntity.getUserId());
+        UtilisateurEntity utilisateur = utilisateurRepository.findById(session.getUserId());
+        if (utilisateur != null) {
+            utilisateur.setStatutConnexion(0);
+            utilisateurRepository.persist(utilisateur);
+            System.out.println("Logout success");
         }
-
-        utilisateurEntity.setStatutConnexion(0);
-        utilisateurRepository.persist(utilisateurEntity);
-        System.out.println("logout success");
 
         sessionService.removeSession(sessionId);
     }
 
-    public SessionEntity getUserBySession(String sessionId) {
-        return sessionService.getSession(sessionId);
+    public UtilisateurEntity getUserBySession(String sessionId) {
+        SessionEntity session = sessionService.getSession(sessionId);
+        if (session == null) return null;
+        return utilisateurRepository.findById(session.getUserId());
     }
 
     public List<UtilisateurEntity> getAllUtilisateursConnected() {

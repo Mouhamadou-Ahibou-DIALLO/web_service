@@ -26,7 +26,23 @@ public class PostEntity extends PanacheMongoEntity {
 
     public PostEntity() {}
 
-    public PostEntity(String date, String hour,String body, int createdBy, int likes, List<Integer> likedBy, List<String> hashtags, List<Comment> comments, Image image, List<Integer> sharedBy) {
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "date='" + date + '\'' +
+                ", hour='" + hour + '\'' +
+                ", createdBy=" + createdBy +
+                ", body='" + body + '\'' +
+                ", likes=" + likes +
+                ", likedBy=" + likedBy +
+                ", hashtags=" + hashtags +
+                ", comments=" + comments +
+                ", image=" + image +
+                ", sharedBy=" + sharedBy +
+                '}';
+    }
+
+    public PostEntity(String date, String hour, String body, int createdBy, int likes, List<Integer> likedBy, List<String> hashtags, List<Comment> comments, Image image, List<Integer> sharedBy) {
         this.date = date;
         this.hour = hour;
         this.body = body;

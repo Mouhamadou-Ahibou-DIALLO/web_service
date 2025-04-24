@@ -14,7 +14,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.time.Instant;
 import java.util.List;
 
 @ApplicationScoped
@@ -43,8 +42,8 @@ public class UtilisateurController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response authentifier(LoginRequest loginRequest) {
         try {
-            Long idUser = utilisateurService.authentifier(loginRequest);
-            return Response.ok(idUser).build();
+            SessionEntity session = utilisateurService.authentifier(loginRequest);
+            return Response.ok(session).build();
         } catch (UtilisateurNotFoundException e) {
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity("Utilisateur non trouvé").build();
@@ -53,4 +52,29 @@ public class UtilisateurController {
                     .entity("Mot de passe incorrect").build();
         }
     }
+
+    @POST
+    @Path("/logout/{sessionId}")
+    public Response logout(@PathParam("sessionId") String sessionId) {
+        try {
+            utilisateurService.logout(sessionId);
+            return Response.ok("Déconnecté avec succès").build();
+        } catch (UtilisateurNotFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Session invalide").build();
+        }
+    }
+
+    @GET
+    @Path("/session/{sessionId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserBySession(@PathParam("sessionId") String sessionId) {
+        UtilisateurEntity utilisateur = utilisateurService.getUserBySession(sessionId);
+        if (utilisateur == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Utilisateur non trouvé pour cette session").build();
+        }
+        return Response.ok(utilisateur).build();
+    }
+
 }

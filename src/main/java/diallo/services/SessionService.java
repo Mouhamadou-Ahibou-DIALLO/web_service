@@ -1,41 +1,39 @@
 package diallo.services;
 
 import diallo.entities.SessionEntity;
-import diallo.entities.UtilisateurEntity;
+import io.quarkus.mongodb.panache.PanacheMongoRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.time.Instant;
-import java.util.Map;
+import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
-public class SessionService {
+public class SessionService implements PanacheMongoRepository<SessionEntity> {
 
-    private final Map<String, SessionEntity> sessionStore = new ConcurrentHashMap<>();
+    public SessionEntity createSession(Long userId, String mail, String nom, String prenom, String pseudo) {
+        SessionEntity session = new SessionEntity();
+        session.setSessionId(UUID.randomUUID().toString());
+        session.setUserId(userId);
+        session.setMail(mail);
+        session.setNom(nom);
+        session.setPrenom(prenom);
+        session.setPseudo(pseudo);
+        session.setStatutConnexion(1);
 
-    public SessionEntity createSession(UtilisateurEntity utilisateurEntity) {
-        SessionEntity sessionEntity = new SessionEntity();
-        sessionEntity.setUserId(utilisateurEntity.getId());
-        sessionEntity.setMail(utilisateurEntity.getMail());
-        sessionEntity.setNom(utilisateurEntity.getNom());
-        sessionEntity.setPrenom(utilisateurEntity.getPrenom());
-        sessionEntity.setAvatar(utilisateurEntity.getAvatar());
-        sessionEntity.setPseudo(utilisateurEntity.getPseudo());
-        sessionEntity.setStatutConnexion(utilisateurEntity.getStatutConnexion());
-        sessionEntity.setCreatedAt(Instant.now());
-        sessionEntity.setExpiredAt(Instant.now().plusSeconds(86400));
-        sessionEntity.setSessionId(UUID.randomUUID().toString());
+        session.setCreatedAt(new Date());
+        session.setExpiredAt(new Date(System.currentTimeMillis() + 3600 * 1000));
 
-        sessionStore.put(sessionEntity.getSessionId(), sessionEntity);
-        return sessionEntity;
-    }
-
-    public SessionEntity getSession(String sessionId) {
-        return sessionStore.get(sessionId);
+        persist(session);
+        return session;
     }
 
     public void removeSession(String sessionId) {
-        sessionStore.remove(sessionId);
+        delete("sessionId", sessionId);
+    }
+
+    public SessionEntity getSession(String sessionId) {
+        return find("sessionId", sessionId).firstResult();
     }
 }
+

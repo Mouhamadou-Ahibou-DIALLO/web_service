@@ -24,6 +24,31 @@ async function afficherProfil() {
     } else {
         avatarElement.src = user.avatar;
     }
+
+    //Afficher les posts de l'utilisateur
+    const listePostsDiv = document.getElementById("liste-posts");
+    const postsRes = await fetch(`/posts/createdBy/${user.id}`);
+    const posts = await postsRes.json();
+
+    if (posts.length === 0) {
+        listePostsDiv.innerHTML = "<p>Vous n'avez encore publié aucun post.</p>";
+        return;
+    }
+
+    posts.forEach(post => {
+        const div = document.createElement("div");
+        div.classList.add("post");
+
+        div.innerHTML = `
+            <h3>${post.body || "(Contenu vide)"}</h3>
+            <p><strong>Date :</strong> ${post.date} à ${post.hour}</p>
+            <button>Modifier</button>
+            <button>Supprimer</button>
+            <hr>
+        `;
+
+        listePostsDiv.appendChild(div);
+    });
 }
 
 function generateAvatar(nom, prenom) {
@@ -48,4 +73,4 @@ function getRandomColor() {
     return color;
 }
 
-afficherProfil();
+window.addEventListener("DOMContentLoaded", afficherProfil);

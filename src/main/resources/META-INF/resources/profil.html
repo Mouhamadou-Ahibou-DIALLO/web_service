@@ -10,10 +10,18 @@
     <h1>Profil de <span id="nom"></span></h1>
     <button onclick="window.location.href='home.html'">Retour</button>
 </header>
+
 <main>
-    <p>Email: <span id="email"></span></p>
-    <p>Pseudo: <span id="pseudo"></span></p>
-    <p>Avatar: <img id="avatar" width="100" /></p>
+    <section id="infos">
+        <p>Email: <span id="email"></span></p>
+        <p>Pseudo: <span id="pseudo"></span></p>
+        <p>Avatar: <img id="avatar" width="100" /></p>
+    </section>
+
+    <section id="mes-posts">
+        <h2>Mes publications</h2>
+        <div id="liste-posts"></div>
+    </section>
 </main>
 
 <script src="js/profil.js"></script>

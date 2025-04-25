@@ -25,4 +25,8 @@ public class PostService {
         postRepository.persist(post);
         return post;
     }
+
+    public List<PostEntity> findByCreatedBy(int createdBy) {
+        return postRepository.findByCreatdBy(createdBy);
+    }
 }

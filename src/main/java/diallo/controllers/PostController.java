@@ -31,4 +31,12 @@ public class PostController {
         PostEntity addedPost = postService.addPost(post);
         return Response.status(Response.Status.CREATED).entity("Post added with success: " + addedPost).build();
     }
+
+    @GET
+    @Path("/createdBy/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPostsByCreator(@PathParam("userId") long userId) {
+        List<PostEntity> posts = postService.findByCreatedBy((int) userId);
+        return Response.ok(posts).build();
+    }
 }

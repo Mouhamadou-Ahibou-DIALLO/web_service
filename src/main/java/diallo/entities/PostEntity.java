@@ -18,6 +18,7 @@ public class PostEntity extends PanacheMongoEntity {
     public int createdBy;
     public String body;
     public int likes;
+
     public List<Integer> likedBy = new ArrayList<>();
     public List<String> hashtags = new ArrayList<>();
     public List<Comment> comments = new ArrayList<>();
@@ -25,6 +26,86 @@ public class PostEntity extends PanacheMongoEntity {
     public List<Integer> sharedBy = new ArrayList<>();
 
     public PostEntity() {}
+
+    public void setLikedBy(List<Integer> likedBy) {
+        this.likedBy = likedBy;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public void setHashtags(List<String> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public void setSharedBy(List<Integer> sharedBy) {
+        this.sharedBy = sharedBy;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public List<Integer> getLikedBy() {
+        return likedBy;
+    }
+
+    public List<String> getHashtags() {
+        return hashtags;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public List<Integer> getSharedBy() {
+        return sharedBy;
+    }
 
     @Override
     public String toString() {

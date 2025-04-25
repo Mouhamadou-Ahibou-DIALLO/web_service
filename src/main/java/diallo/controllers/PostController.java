@@ -34,9 +34,22 @@ public class PostController {
 
     @GET
     @Path("/createdBy/{userId}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getPostsByCreator(@PathParam("userId") long userId) {
         List<PostEntity> posts = postService.findByCreatedBy((int) userId);
         return Response.ok(posts).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updatePost(@PathParam("id") String id, PostEntity updatedPost) {
+        PostEntity updatedPostEntity = postService.updatePost(id, updatedPost);
+        return Response.ok(updatedPostEntity).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deletePost(@PathParam("id") String id) {
+        postService.deletePost(id);
+        return Response.ok("Post deleted with success").build();
     }
 }

@@ -2,6 +2,7 @@ package diallo.repositories;
 
 import diallo.entities.PostEntity;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;

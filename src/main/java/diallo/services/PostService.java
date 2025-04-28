@@ -21,6 +21,12 @@ public class PostService {
         return posts;
     }
 
+    public PostEntity getPostById(ObjectId id) {
+        PostEntity post = postRepository.findById(id);
+        System.out.println("Get post by id : " + post + " et son id: " + id);
+        return post;
+    }
+
     public PostEntity addPost(Long createdBy, CreatePostRequest createPostRequest) {
         PostEntity post = new PostEntity();
 
@@ -31,6 +37,7 @@ public class PostService {
         post.setImage(createPostRequest.image());
         post.setTitle(createPostRequest.title());
         post.setCreatedBy(createdBy);
+        post.setLikes(0);
 
         postRepository.persist(post);
         System.out.println("post added with success : " + post);
@@ -41,11 +48,12 @@ public class PostService {
         return postRepository.findByCreatedBy(createdBy);
     }
 
-    public PostEntity updatePost(ObjectId _id, PostUpdatedRequest updateRequest) throws PostNotFoundException {
-        PostEntity post = postRepository.findById(_id);
+    public PostEntity updatePost(ObjectId id, PostUpdatedRequest updateRequest) throws PostNotFoundException {
+        PostEntity post = postRepository.findById(id);
         if (post == null) {
-            throw new PostNotFoundException(_id);
+            throw new PostNotFoundException(id);
         }
+        System.out.println("Get post in update method : " + post + " et son id: " + id);
 
         post.setTitle(updateRequest.title());
         post.setBody(updateRequest.body());
@@ -59,15 +67,14 @@ public class PostService {
         return post;
     }
 
-    public void deletePost(ObjectId _id) throws PostNotFoundException {
-        PostEntity post = postRepository.findById(_id);
+    public void deletePost(ObjectId id) throws PostNotFoundException {
+        PostEntity post = postRepository.findById(id);
         if (post == null) {
-            throw new PostNotFoundException(_id);
+            throw new PostNotFoundException(id);
         }
+        System.out.println("Get post in delete method : " + post + " et son id: " + id);
 
         System.out.println("post deleted with success : " + post);
         postRepository.delete(post);
     }
-
-
 }

@@ -44,11 +44,18 @@ public class PostController {
         return Response.ok(posts).build();
     }
 
+    @GET
+    @Path("/{id}")
+    public Response getPostById(@PathParam("id") String id) {
+        PostEntity post = postService.getPostById(new ObjectId(id));
+        return Response.ok(post).build();
+    }
+
     @PUT
-    @Path("/{_id}")
-    public Response UpdatePost(@PathParam("_id") String _id, PostUpdatedRequest updateRequest) {
+    @Path("/{id}")
+    public Response UpdatePost(@PathParam("id") String id, PostUpdatedRequest updateRequest) {
         try {
-            PostEntity updatedPost = postService.updatePost(new ObjectId(_id), updateRequest);
+            PostEntity updatedPost = postService.updatePost(new ObjectId(id), updateRequest);
             return Response.ok(updatedPost).build();
         } catch (PostNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
@@ -56,10 +63,10 @@ public class PostController {
     }
 
     @DELETE
-    @Path("/{_id}")
-    public Response deletePost(@PathParam("_id") String _id) {
+    @Path("/{id}")
+    public Response deletePost(@PathParam("id") String id) {
         try {
-            postService.deletePost(new ObjectId(_id));
+            postService.deletePost(new ObjectId(id));
             return Response.ok("Post deleted with success").build();
         } catch (PostNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();

@@ -8,13 +8,55 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @MongoEntity(collection = "postsAhibou", database = "db-CERI")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostEntity extends PanacheMongoEntity {
 
-    ObjectId _id;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public List<Integer> getLikedBy() {
+        return likedBy;
+    }
+
+    public List<String> getHashtags() {
+        return hashtags;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public List<Integer> getSharedBy() {
+        return sharedBy;
+    }
+
     private String title;
     private String date;
     private String hour;
@@ -28,10 +70,7 @@ public class PostEntity extends PanacheMongoEntity {
     private Image image;
     private List<Integer> sharedBy = new ArrayList<>();
 
-    public PostEntity() {
-        _id = new ObjectId();
-        likes = 0;
-    }
+    public PostEntity() {}
 
     public void setLikedBy(List<Integer> likedBy) {
         this.likedBy = likedBy;

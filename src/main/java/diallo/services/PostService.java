@@ -21,41 +21,53 @@ public class PostService {
         return posts;
     }
 
-    public PostEntity addPost(PostEntity post) {
-        System.out.println("post added : " + post);
+    public PostEntity addPost(Long createdBy, CreatePostRequest createPostRequest) {
+        PostEntity post = new PostEntity();
+
+        post.setBody(createPostRequest.body());
+        post.setDate(createPostRequest.date());
+        post.setHour(createPostRequest.hour());
+        post.setHashtags(createPostRequest.hashtags());
+        post.setImage(createPostRequest.image());
+        post.setTitle(createPostRequest.title());
+        post.setCreatedBy(createdBy);
+
         postRepository.persist(post);
+        System.out.println("post added with success : " + post);
         return post;
     }
 
-    public List<PostEntity> findByCreatedBy(int createdBy) {
-        return postRepository.findByCreatdBy(createdBy);
+    public List<PostEntity> findByCreatedBy(Long createdBy) {
+        return postRepository.findByCreatedBy(createdBy);
     }
 
-    public PostEntity updatePost(String id, PostEntity updatedPost) {
-        PostEntity post = postRepository.findById(new ObjectId(id));
+    public PostEntity updatePost(ObjectId _id, PostUpdatedRequest updateRequest) throws PostNotFoundException {
+        PostEntity post = postRepository.findById(_id);
         if (post == null) {
-            return null;
+            throw new PostNotFoundException(_id);
         }
-        post.setBody(updatedPost.getBody());
-        post.setDate(updatedPost.getDate());
-        post.setHour(updatedPost.getHour());
-        post.setHashtags(updatedPost.getHashtags());
-        post.setImage(updatedPost.getImage());
 
-        System.out.println("post updated with success: " + post);
-        postRepository.persist(post);
+        post.setTitle(updateRequest.title());
+        post.setBody(updateRequest.body());
+        post.setDate(updateRequest.date());
+        post.setHour(updateRequest.hour());
+        post.setImage(updateRequest.image());
+        post.setHashtags(updateRequest.hashtags());
+
+        postRepository.update(post);
+        System.out.println("post updated with success : " + post);
         return post;
     }
 
-    public void deletePost(String id) {
-        PostEntity post = postRepository.findById(new ObjectId(id));
-        if (post != null) {
-            System.out.println("Post deleted with success: " + post);
-            postRepository.delete(post);
+    public void deletePost(ObjectId _id) throws PostNotFoundException {
+        PostEntity post = postRepository.findById(_id);
+        if (post == null) {
+            throw new PostNotFoundException(_id);
         }
+
+        System.out.println("post deleted with success : " + post);
+        postRepository.delete(post);
     }
 
-    public PostEntity findById(String id) {
-        return postRepository.findById(new ObjectId(id));
-    }
+
 }

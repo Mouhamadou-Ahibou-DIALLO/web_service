@@ -1,14 +1,18 @@
 package diallo.controllers;
 
 import diallo.entities.PostEntity;
+import diallo.services.CreatePostRequest;
+import diallo.services.PostNotFoundException;
 import diallo.services.PostService;
 
+import diallo.services.PostUpdatedRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -27,29 +31,38 @@ public class PostController {
     }
 
     @POST
-    public Response addPost(PostEntity post) {
-        PostEntity addedPost = postService.addPost(post);
+    @Path("/{userId}")
+    public Response addPost(@PathParam("userId") long userId, CreatePostRequest post) {
+        PostEntity addedPost = postService.addPost(userId, post);
         return Response.status(Response.Status.CREATED).entity("Post added with success: " + addedPost).build();
     }
 
     @GET
     @Path("/createdBy/{userId}")
     public Response getPostsByCreator(@PathParam("userId") long userId) {
-        List<PostEntity> posts = postService.findByCreatedBy((int) userId);
+        List<PostEntity> posts = postService.findByCreatedBy(userId);
         return Response.ok(posts).build();
     }
 
     @PUT
-    @Path("/{id}")
-    public Response updatePost(@PathParam("id") String id, PostEntity updatedPost) {
-        PostEntity updatedPostEntity = postService.updatePost(id, updatedPost);
-        return Response.ok(updatedPostEntity).build();
+    @Path("/{_id}")
+    public Response UpdatePost(@PathParam("_id") String _id, PostUpdatedRequest updateRequest) {
+        try {
+            PostEntity updatedPost = postService.updatePost(new ObjectId(_id), updateRequest);
+            return Response.ok(updatedPost).build();
+        } catch (PostNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @DELETE
-    @Path("/{id}")
-    public Response deletePost(@PathParam("id") String id) {
-        postService.deletePost(id);
-        return Response.ok("Post deleted with success").build();
+    @Path("/{_id}")
+    public Response deletePost(@PathParam("_id") String _id) {
+        try {
+            postService.deletePost(new ObjectId(_id));
+            return Response.ok("Post deleted with success").build();
+        } catch (PostNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 }

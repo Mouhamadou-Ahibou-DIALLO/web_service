@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profil.css">
 </head>
 <body>
+
 <div id="notification" class="notification" style="display: none;"></div>
+
 <header>
     <h1>Profil de <span id="nom"></span></h1>
     <button onclick="window.location.href='home.html'">Retour</button>
@@ -21,30 +23,31 @@
 
     <section id="mes-posts">
         <h2>Mes publications</h2>
+        <button id="btn-new-post">Créer un post</button>
         <div id="liste-posts"></div>
     </section>
 
-    <div id="edit-popup" class="popup" style="display: none;">
+    <div id="post-popup" class="popup" style="display: none;">
         <div class="popup-content">
-            <h2>Modifier le post</h2>
-            <form id="edit-form">
+            <h2 id="popup-title">Créer/Modifier un post</h2>
+            <form id="post-form">
                 <label>Contenu :</label><br>
-                <textarea id="edit-body" required></textarea><br>
+                <textarea id="post-body" required></textarea><br>
 
                 <label>Hashtags (séparés par des virgules) :</label><br>
-                <input type="text" id="edit-hashtags"><br>
+                <input type="text" id="post-hashtags"><br>
 
                 <label>Titre de l'image :</label><br>
-                <input type="text" id="edit-image-title"><br>
+                <input type="text" id="post-image-title"><br>
 
                 <label>Image (upload) :</label><br>
-                <input type="file" id="edit-image-file"><br>
+                <input type="file" id="post-image-file"><br>
 
-                <input type="hidden" id="edit-id">
+                <input type="hidden" id="post-id">
 
                 <br>
                 <button type="submit">Sauvegarder</button>
-                <button type="button" onclick="closeEditPopup()">Annuler</button>
+                <button type="button" onclick="closePostPopup()">Annuler</button>
             </form>
         </div>
     </div>

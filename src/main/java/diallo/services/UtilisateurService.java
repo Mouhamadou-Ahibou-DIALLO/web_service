@@ -22,13 +22,13 @@ public class UtilisateurService {
     public SessionEntity authentifier(LoginRequest loginRequest)
             throws UtilisateurNotFoundException, WrongPasswordException {
 
-        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByMail(loginRequest.getMail());
+        UtilisateurEntity utilisateurEntity = utilisateurRepository.findByMail(loginRequest.mail());
         if (utilisateurEntity == null) {
             System.out.println("false");
-            throw new UtilisateurNotFoundException(loginRequest.getMail());
+            throw new UtilisateurNotFoundException(loginRequest.mail());
         }
 
-        String motPasseHache = HashUtil.sha1(loginRequest.getMotPasse());
+        String motPasseHache = HashUtil.sha1(loginRequest.motPasse());
         if (!utilisateurEntity.getMotPasse().equals(motPasseHache)) {
             throw new WrongPasswordException();
         }

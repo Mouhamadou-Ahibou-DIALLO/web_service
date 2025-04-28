@@ -8,27 +8,37 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @MongoEntity(collection = "postsAhibou", database = "db-CERI")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostEntity extends PanacheMongoEntity {
 
-    public String date;
-    public String hour;
-    public int createdBy;
-    public String body;
-    public int likes;
+    ObjectId _id;
+    private String title;
+    private String date;
+    private String hour;
+    private Long createdBy;
+    private String body;
+    private int likes;
 
-    public List<Integer> likedBy = new ArrayList<>();
-    public List<String> hashtags = new ArrayList<>();
-    public List<Comment> comments = new ArrayList<>();
-    public Image image;
-    public List<Integer> sharedBy = new ArrayList<>();
+    private List<Integer> likedBy = new ArrayList<>();
+    private List<String> hashtags = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
+    private Image image;
+    private List<Integer> sharedBy = new ArrayList<>();
 
-    public PostEntity() {}
+    public PostEntity() {
+        _id = new ObjectId();
+        likes = 0;
+    }
 
     public void setLikedBy(List<Integer> likedBy) {
         this.likedBy = likedBy;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setDate(String date) {
@@ -39,7 +49,7 @@ public class PostEntity extends PanacheMongoEntity {
         this.hour = hour;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -67,52 +77,13 @@ public class PostEntity extends PanacheMongoEntity {
         this.sharedBy = sharedBy;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getHour() {
-        return hour;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public List<Integer> getLikedBy() {
-        return likedBy;
-    }
-
-    public List<String> getHashtags() {
-        return hashtags;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public List<Integer> getSharedBy() {
-        return sharedBy;
-    }
-
     @Override
     public String toString() {
         return "PostEntity{" +
                 "date='" + date + '\'' +
                 ", hour='" + hour + '\'' +
                 ", createdBy=" + createdBy +
+                ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", likes=" + likes +
                 ", likedBy=" + likedBy +
@@ -121,19 +92,6 @@ public class PostEntity extends PanacheMongoEntity {
                 ", image=" + image +
                 ", sharedBy=" + sharedBy +
                 '}';
-    }
-
-    public PostEntity(String date, String hour, String body, int createdBy, int likes, List<Integer> likedBy, List<String> hashtags, List<Comment> comments, Image image, List<Integer> sharedBy) {
-        this.date = date;
-        this.hour = hour;
-        this.body = body;
-        this.createdBy = createdBy;
-        this.likes = likes;
-        this.likedBy = likedBy;
-        this.hashtags = hashtags;
-        this.comments = comments;
-        this.image = image;
-        this.sharedBy = sharedBy;
     }
 
     public static class Comment {

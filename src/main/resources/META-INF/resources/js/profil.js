@@ -209,6 +209,9 @@ function fileToDataURL(file) {
     });
 }
 
-document.getElementById("close-popup").addEventListener("click", closePostPopup);
+const closePopupButton = document.getElementById("close-popup");
+if (closePopupButton) {
+    closePopupButton.addEventListener("click", closePostPopup);
+}
 
 window.addEventListener("DOMContentLoaded", afficherProfil);

@@ -59,6 +59,8 @@ public class UtilisateurService {
     public UtilisateurEntity getUserBySession(String sessionId) {
         SessionEntity session = sessionService.getSession(sessionId);
         if (session == null) return null;
+
+        System.out.println("get user by session success : " + session);
         return utilisateurRepository.findById(session.getUserId());
     }
 

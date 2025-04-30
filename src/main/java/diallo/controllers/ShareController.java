@@ -39,4 +39,15 @@ public class ShareController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
+    @DELETE
+    @Path("/{postId}/{userId}")
+    public Response unsharePost(@PathParam("postId") String postId, @PathParam("userId") Long userId) {
+        try {
+            shareService.unsharePost(new ObjectId(postId), userId);
+            return Response.ok().build();
+        } catch (PostNotFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
 }

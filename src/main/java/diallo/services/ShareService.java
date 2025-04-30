@@ -33,6 +33,22 @@ public class ShareService {
         return post;
     }
 
+    public void unsharePost(ObjectId id, Long userId) throws PostNotFoundException {
+        PostEntity post = postRepository.findById(id);
+        if (post == null) {
+            throw new PostNotFoundException(id);
+        }
+
+        List<Integer> sharedBy = post.getSharedBy();
+        if (sharedBy.contains(userId.intValue())) {
+            sharedBy.remove(userId.intValue());
+            System.out.println("post unshared with success : " + post);
+        }
+
+        post.setSharedBy(sharedBy);
+        postRepository.update(post);
+    }
+
     public List<PostEntity> getSharedPosts(Long userId) {
         return postRepository.findBySharedBy(userId);
     }

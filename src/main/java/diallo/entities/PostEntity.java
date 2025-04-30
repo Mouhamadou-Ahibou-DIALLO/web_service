@@ -134,11 +134,19 @@ public class PostEntity extends PanacheMongoEntity {
     }
 
     public static class Comment {
-        public ObjectId _id = new ObjectId();
+        public ObjectId _id;
         public String text;
         public int commentedBy;
         public String date;
         public String hour;
+
+        public Comment(String text, int commentedBy, String date, String hour) {
+            _id = new ObjectId();
+            this.text = text;
+            this.commentedBy = commentedBy;
+            this.date = date;
+            this.hour = hour;
+        }
     }
 
     public static class Image {

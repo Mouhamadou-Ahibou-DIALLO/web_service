@@ -36,6 +36,12 @@ public class UtilisateurController {
         return utilisateurService.getAllUtilisateursConnected();
     }
 
+    @GET
+    @Path("/{id}")
+    public UtilisateurEntity getUtilisateurById(@PathParam("id") long id) {
+        return utilisateurService.getUtilisateurById(id);
+    }
+
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)

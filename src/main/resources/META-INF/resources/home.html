@@ -6,17 +6,50 @@
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
+
 <header>
     <h1>Bienvenue <span id="nomUtilisateur"></span></h1>
-    <button onclick="goProfil()">Profil</button>
-    <button onclick="logout()">Déconnexion</button>
+    <div class="header-right">
+        <button onclick="goProfil()">Profil</button>
+        <button onclick="logout()">Déconnexion</button>
+    </div>
 </header>
+
 <main>
-    <section id="posts-container">
-        <h2>Publications récentes</h2>
+    <aside class="left-sidebar">
+        <div class="connected-user">
+            <img id="user-avatar" class="avatar" src="" alt="Avatar">
+            <div class="user-info">
+                <h3 id="user-nom"></h3>
+                <p class="online-status">En ligne</p>
+            </div>
+        </div>
+        <div class="connected-list">
+            <p><strong>Utilisateurs connectés (0)</strong></p>
+            <ul id="connected-users"></ul>
+        </div>
+    </aside>
+
+    <section class="main-feed">
+        <div class="filters">
+            <select id="sort-select">
+                <option value="recent">Date (récent)</option>
+                <option value="likes">Plus aimé</option>
+                <option value="comments">Plus commenté</option>
+            </select>
+            <input type="text" id="search-input" placeholder="Recherche par titre, hashtag...">
+        </div>
+
+        <div id="posts-container"></div>
+
+        <div class="pagination">
+            <button id="prev-page">Précédent</button>
+            <span id="page-number">Page 1</span>
+            <button id="next-page">Suivant</button>
+        </div>
     </section>
 </main>
-
 <script src="js/home.js"></script>
 </body>
 </html>
+

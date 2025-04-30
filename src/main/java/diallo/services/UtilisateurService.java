@@ -73,4 +73,9 @@ public class UtilisateurService {
         System.out.println("List des utilisateurs");
         return utilisateurRepository.listAll();
     }
+
+    public UtilisateurEntity getUtilisateurById(long id) {
+        System.out.println("Get utilisateur by id");
+        return utilisateurRepository.findById(id);
+    }
 }

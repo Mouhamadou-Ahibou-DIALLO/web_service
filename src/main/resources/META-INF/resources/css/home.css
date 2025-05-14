@@ -12,7 +12,6 @@ body {
     min-height: 100vh;
 }
 
-/* HEADER */
 header {
     background-color: #003366;
     color: white;
@@ -27,14 +26,12 @@ header h1 {
     font-size: 1.5rem;
 }
 
-/* MAIN */
 main {
     display: flex;
     padding: 1.5rem;
     flex: 1;
 }
 
-/* BOUTONS HEADER */
 header button {
     margin-left: 1rem;
     padding: 0.5rem 1rem;
@@ -51,14 +48,12 @@ header button:hover {
     background-color: #cc0000;
 }
 
-/* AVATAR */
 img#avatar {
     border-radius: 50%;
     border: 2px solid #003366;
     margin-top: 1rem;
 }
 
-/* MESSAGES D'ERREUR */
 #error {
     color: red;
     font-size: 0.9rem;
@@ -210,3 +205,44 @@ img#avatar {
     font-weight: bold;
     font-size: 1.1rem;
 }
+
+#bandeau-message {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #004080;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.post-card:hover {
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    transform: scale(1.01);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button.liked, button.shared {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5); z-index: 9999;
+    display: flex; justify-content: center; align-items: center;
+}
+.modal-content {
+    background: white; padding: 20px; border-radius: 8px;
+    width: 300px; max-height: 80vh; overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+.close-btn {
+    float: right; cursor: pointer; font-size: 20px;
+}
+#likes-list img { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; vertical-align: middle; }

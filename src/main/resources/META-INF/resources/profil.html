@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/profil.css">
 </head>
 <body>
-
 <div id="notification" class="notification" style="display: none;"></div>
 
 <header>
@@ -23,10 +22,17 @@
 
     <section id="mes-posts">
         <button id="btn-new-post">Créer un post</button>
-        <br>
-        <h2>Mes publications</h2>
-        <br>
-        <div id="liste-posts"></div>
+        <h2 onclick="toggleSection('user-posts')">Mes publications <span class="toggle">[+]</span></h2>
+        <div id="user-posts" class="collapsible-content"></div>
+
+        <h2 onclick="toggleSection('liked-posts')">Posts likés <span class="toggle">[+]</span></h2>
+        <div id="liked-posts" class="collapsible-content" style="display:none;"></div>
+
+        <h2 onclick="toggleSection('commented-posts')">Posts commentés <span class="toggle">[+]</span></h2>
+        <div id="commented-posts" class="collapsible-content" style="display:none;"></div>
+
+        <h2 onclick="toggleSection('shared-posts')">Posts partagés <span class="toggle">[+]</span></h2>
+        <div id="shared-posts" class="collapsible-content" style="display:none;"></div>
     </section>
 
     <div id="post-popup" class="popup" style="display: none;">
@@ -35,30 +41,31 @@
             <form id="post-form">
                 <label>Titre du post :</label><br>
                 <input type="text" id="post-title" required><br>
-
                 <label>Contenu :</label><br>
                 <textarea id="post-body" required></textarea><br>
-
                 <label>Hashtags (séparés par des virgules) :</label><br>
                 <input type="text" id="post-hashtags"><br>
-
                 <label>Titre de l'image :</label><br>
                 <input type="text" id="post-image-title"><br>
-
                 <label>Image (upload) :</label><br>
                 <input type="file" id="post-image-file"><br>
-
                 <input type="hidden" id="post-id">
-
                 <br>
                 <button type="submit">Sauvegarder</button>
                 <button type="button" onclick="closePostPopup()">Annuler</button>
             </form>
         </div>
     </div>
-
 </main>
-
 <script src="js/profil.js"></script>
+<script>
+    function toggleSection(id) {
+        const section = document.getElementById(id);
+        const toggle = section.previousElementSibling.querySelector('.toggle');
+        const visible = section.style.display !== 'none';
+        section.style.display = visible ? 'none' : 'block';
+        toggle.textContent = visible ? '[+]' : '[-]';
+    }
+</script>
 </body>
 </html>

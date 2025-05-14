@@ -14,25 +14,32 @@ public class TriService {
     @Inject
     PostRepository postRepository;
 
-    List<PostEntity> posts = postRepository.listAll();
-
     public List<PostEntity> getMostRecentPosts() {
-        return posts.stream().sorted((p1, p2) -> p2.getDate().compareTo(p1.getDate())).toList();
+        return postRepository.listAll().stream()
+                .sorted((p1, p2) -> p2.getDate().compareTo(p1.getDate()))
+                .toList();
     }
 
     public List<PostEntity> getMostLikedPosts() {
-        return posts.stream().sorted((p1, p2) -> p2.getLikedBy().size() - p1.getLikedBy().size()).toList();
+        return postRepository.listAll().stream()
+                .sorted((p1, p2) -> p2.getLikedBy().size() - p1.getLikedBy().size())
+                .toList();
     }
 
     public List<PostEntity> getMostCommentedPosts() {
-        return posts.stream().sorted((p1, p2) -> p2.getComments().size() - p1.getComments().size()).toList();
+        return postRepository.listAll().stream()
+                .sorted((p1, p2) -> p2.getComments().size() - p1.getComments().size())
+                .toList();
     }
 
     public List<PostEntity> getMostSharedPosts() {
-        return posts.stream().sorted((p1, p2) -> p2.getSharedBy().size() - p1.getSharedBy().size()).toList();
+        return postRepository.listAll().stream()
+                .sorted((p1, p2) -> p2.getSharedBy().size() - p1.getSharedBy().size())
+                .toList();
     }
 
     public List<PostEntity> searchPosts(String keyword) {
         return postRepository.searchByKeyword(keyword);
     }
 }
+

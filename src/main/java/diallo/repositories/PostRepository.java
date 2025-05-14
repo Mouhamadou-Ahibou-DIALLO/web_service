@@ -2,6 +2,7 @@ package diallo.repositories;
 
 import diallo.entities.PostEntity;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
+import org.bson.types.ObjectId;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -19,12 +20,17 @@ public class PostRepository implements PanacheMongoRepository<PostEntity> {
         return find("likedBy", likedBy).list();
     }
 
-    public List<PostEntity> findBySharedBy(Long sharedBy) {
-        return find("sharedBy", sharedBy).list();
+    public List<PostEntity> findBySharedBy(Long userId) {
+        return listAll().stream()
+                .filter(p -> p.getSharedBy() != null && p.getSharedBy().contains(userId.intValue()))
+                .collect(Collectors.toList());
     }
 
-    public List<PostEntity> findByCommentedBy(Long commentedBy) {
-        return find("commentedBy", commentedBy).list();
+    public List<PostEntity> findByCommentedBy(Long userId) {
+        return listAll().stream()
+                .filter(p -> p.getComments() != null &&
+                        p.getComments().stream().anyMatch(c -> c.commentedBy == userId))
+                .collect(Collectors.toList());
     }
 
     public List<PostEntity> searchByKeyword(String keyword) {
@@ -34,5 +40,10 @@ public class PostRepository implements PanacheMongoRepository<PostEntity> {
                         || p.getBody().toLowerCase().contains(lowerKeyword)
                         || p.getHashtags().stream().anyMatch(h -> h.toLowerCase().contains(lowerKeyword)))
                 .collect(Collectors.toList());
+    }
+
+    public List<Long> getUserIdsWhoLiked(String postId) {
+        PostEntity post = findById(new ObjectId(postId));
+        return post != null ? post.getLikedBy().stream().map(Integer::longValue).toList() : List.of();
     }
 }

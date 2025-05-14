@@ -2,6 +2,7 @@ package diallo.services;
 
 import diallo.entities.PostEntity;
 import diallo.repositories.PostRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
@@ -20,16 +21,16 @@ public class ShareService {
             throw new PostNotFoundException(id);
         }
 
-        System.out.println("Get post in share method : " + post + " et son id: " + id);
-
         List<Integer> sharedBy = post.getSharedBy();
-        if (!sharedBy.contains(userId.intValue())) {
-            sharedBy.add(userId.intValue());
-            System.out.println("post shared with success : " + post);
+        int uid = userId.intValue();
+
+        if (!sharedBy.contains(uid)) {
+            sharedBy.add(uid);
+            post.setSharedBy(sharedBy);
+            postRepository.update(post);
+            System.out.println("Post shared with success");
         }
 
-        post.setSharedBy(sharedBy);
-        postRepository.update(post);
         return post;
     }
 
@@ -40,13 +41,14 @@ public class ShareService {
         }
 
         List<Integer> sharedBy = post.getSharedBy();
-        if (sharedBy.contains(userId.intValue())) {
-            sharedBy.remove(userId.intValue());
-            System.out.println("post unshared with success : " + post);
-        }
+        int uid = userId.intValue();
 
-        post.setSharedBy(sharedBy);
-        postRepository.update(post);
+        if (sharedBy.contains(uid)) {
+            sharedBy.remove((Integer) uid);
+            post.setSharedBy(sharedBy);
+            postRepository.update(post);
+            System.out.println("Post unshared with success");
+        }
     }
 
     public List<PostEntity> getSharedPosts(Long userId) {

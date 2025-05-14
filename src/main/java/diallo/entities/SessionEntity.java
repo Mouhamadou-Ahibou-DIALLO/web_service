@@ -55,8 +55,8 @@ public class SessionEntity extends PanacheMongoEntity {
     private Date expiredAt;
 
     public SessionEntity() {}
-    
-    public SessionEntity(String sessionId, Long userId, String mail, String nom, String prenom, 
+
+    public SessionEntity(String sessionId, Long userId, String mail, String nom, String prenom,
                          String pseudo, int statutConnexion, Date createdAt, Date expiredAt) {
         this.sessionId = sessionId;
         this.userId = userId;

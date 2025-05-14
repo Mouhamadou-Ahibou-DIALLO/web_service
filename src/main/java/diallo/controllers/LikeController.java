@@ -51,4 +51,11 @@ public class LikeController {
         List<PostEntity> likedPosts = likeService.getLikedPosts(userId);
         return Response.ok(likedPosts).build();
     }
+
+    @GET
+    @Path("/who-liked/{postId}")
+    public Response getUsersWhoLiked(@PathParam("postId") String postId) {
+        List<Long> userIds = likeService.getUserIdsWhoLiked(postId);
+        return Response.ok(userIds).build();
+    }
 }

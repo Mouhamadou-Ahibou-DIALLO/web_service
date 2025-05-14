@@ -140,6 +140,8 @@ public class PostEntity extends PanacheMongoEntity {
         public String date;
         public String hour;
 
+        public Comment() {}
+
         public Comment(String text, int commentedBy, String date, String hour) {
             _id = new ObjectId();
             this.text = text;

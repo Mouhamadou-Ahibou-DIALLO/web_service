@@ -24,7 +24,10 @@ public class ShareController {
     ShareService shareService;
 
     @GET
-    public Response getSharedPosts(Long userId) {
+    public Response getSharedPosts(@QueryParam("userId") Long userId) {
+        if (userId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("userId est requis").build();
+        }
         List<PostEntity> sharedPosts = shareService.getSharedPosts(userId);
         return Response.ok(sharedPosts).build();
     }

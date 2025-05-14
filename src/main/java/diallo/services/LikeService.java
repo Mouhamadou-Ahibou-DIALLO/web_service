@@ -2,6 +2,7 @@ package diallo.services;
 
 import diallo.entities.PostEntity;
 import diallo.repositories.PostRepository;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.types.ObjectId;
@@ -19,17 +20,17 @@ public class LikeService {
         if (post == null) {
             throw new PostNotFoundException(id);
         }
-        System.out.println("Get post in like method : " + post + " et son id: " + id);
 
         List<Integer> likedBy = post.getLikedBy();
-        if (!likedBy.contains(userId.intValue())) {
-            likedBy.add(userId.intValue());
-            System.out.println("post liked with success : " + post);
-        }
+        int uid = userId.intValue();
 
-        post.setLikes(post.getLikes() + 1);
-        post.setLikedBy(likedBy);
-        postRepository.update(post);
+        if (!likedBy.contains(uid)) {
+            likedBy.add(uid);
+            post.setLikes(post.getLikes() + 1);
+            post.setLikedBy(likedBy);
+            postRepository.update(post);
+            System.out.println("Post liked with success");
+        }
     }
 
     public void unlikePost(ObjectId id, Long userId) throws PostNotFoundException {
@@ -37,20 +38,24 @@ public class LikeService {
         if (post == null) {
             throw new PostNotFoundException(id);
         }
-        System.out.println("Get post in unlike method : " + post + " et son id: " + id);
 
         List<Integer> likedBy = post.getLikedBy();
-        if (likedBy.contains(userId.intValue())) {
-            likedBy.remove(userId.intValue());
-            System.out.println("post unliked with success : " + post);
-        }
+        int uid = userId.intValue();
 
-        post.setLikes(post.getLikes() - 1);
-        post.setLikedBy(likedBy);
-        postRepository.update(post);
+        if (likedBy.contains(uid)) {
+            likedBy.remove((Integer) uid);
+            post.setLikes(Math.max(0, post.getLikes() - 1));
+            post.setLikedBy(likedBy);
+            postRepository.update(post);
+            System.out.println("Post unliked with success");
+        }
     }
 
     public List<PostEntity> getLikedPosts(Long userId) {
         return postRepository.findByLikedBy(userId);
+    }
+
+    public List<Long> getUserIdsWhoLiked(String postId) {
+        return postRepository.getUserIdsWhoLiked(postId);
     }
 }
